@@ -59,6 +59,15 @@ class App extends Component {
     this.setState({ fishes });
   };
 
+  deleteFish = key => {
+    // 1. Take a copy of state
+    const fishes = { ...this.state.fishes };
+    // 2. update the state (remove item from state)
+    fishes[key] = null; // firebase specific syntax (must be null to remove)
+    // 3. update state
+    this.setState({ fishes });
+  };
+
   loadSampleFishes = e => {
     this.setState({ fishes: sampleFishes });
   };
@@ -70,6 +79,12 @@ class App extends Component {
     order[key] = order[key] + 1 || 1;
     // 3. Call setState to update our state object
     this.setState({ order }); // writing order once 'es6'
+  };
+
+  removeFromOrder = key => {
+    const order = { ...this.state.order };
+    delete order[key];
+    this.setState({ order });
   };
 
   render() {
@@ -88,10 +103,15 @@ class App extends Component {
             ))}
           </ul>
         </div>
-        <Order fishes={this.state.fishes} order={this.state.order} />
+        <Order
+          fishes={this.state.fishes}
+          order={this.state.order}
+          removeFromOrder={this.removeFromOrder}
+        />
         <Inventory
           addFish={this.addFish}
           updateFish={this.updateFish}
+          deleteFish={this.deleteFish}
           loadSampleFishes={this.loadSampleFishes}
           fishes={this.state.fishes}
         />
